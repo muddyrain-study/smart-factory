@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <Scene />
-    <BigScreen />
   </div>
 </template>
 

@@ -23,6 +23,9 @@ export default class City {
           // 调整物体发光亮度
           child.material.emissiveIntensity = 5;
         }
+        if (child.type === "Object3D" && child.children.length === 0) {
+          console.log(child);
+        }
       });
     });
   }
