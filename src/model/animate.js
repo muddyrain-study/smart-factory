@@ -1,5 +1,5 @@
 import controlsModule from "@/model/controls";
-import renderer from "./renderer";
+import renderModule from "./renderer";
 import * as THREE from "three";
 import scene from "./scene";
 import cameraModule from "./camera";
@@ -11,7 +11,8 @@ function animate() {
   let time = clock.getDelta();
   controlsModule.controls.update(time);
   updateMesh(time);
-  renderer.render(scene, cameraModule.activeCamera);
+  renderModule.renderer.render(scene, cameraModule.activeCamera);
+  renderModule.css3DRender.render(scene, cameraModule.activeCamera);
   window.requestAnimationFrame(animate);
 }
 

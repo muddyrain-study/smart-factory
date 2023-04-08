@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import { CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer";
 // 创建渲染函数
 const renderer = new THREE.WebGLRenderer({
   // 抗锯齿
@@ -16,5 +16,9 @@ renderer.shadowMap.enabled = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 // 设置渲染的曝光程度
 renderer.toneMappingExposure = 0.75;
-renderer;
-export default renderer;
+
+const css3DRender = new CSS3DRenderer();
+css3DRender.setSize(window.innerWidth, window.innerHeight);
+document.querySelector("#cssRender").appendChild(css3DRender.domElement);
+
+export default { renderer, css3DRender };

@@ -1,5 +1,5 @@
 import cameraModule from "./camera";
-import renderer from "./renderer";
+import renderModule from "./renderer";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FlyControls } from "three/addons/controls/FlyControls.js";
@@ -19,7 +19,7 @@ class ControlsModule {
     // 创建轨道控制器
     this.controls = new OrbitControls(
       cameraModule.activeCamera,
-      renderer.domElement
+      renderModule.renderer.domElement
     );
     // 设置控制器的阻尼，让控制器更真实
     this.controls.enableDamping = true;
@@ -33,7 +33,7 @@ class ControlsModule {
     // 创建飞行控制器
     this.controls = new FlyControls(
       cameraModule.activeCamera,
-      renderer.domElement
+      renderModule.renderer.domElement
     );
     this.controls.movementSpeed = 100;
     this.controls.rollSpeed = Math.PI / 60;

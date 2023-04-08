@@ -6,7 +6,7 @@ import gsap from "gsap";
 import scene from "@/model/scene";
 import "@/model/init";
 import cameraModule from "@/model/camera";
-import renderer from "@/model/renderer";
+import renderModule from "@/model/renderer";
 import animate from "@/model/animate";
 import createMesh, { updateMesh } from "@/model/createMesh";
 
@@ -19,7 +19,7 @@ scene.add(cameraModule.activeCamera);
 createMesh();
 
 onMounted(() => {
-  sceneDiv.value.appendChild(renderer.domElement);
+  sceneDiv.value.appendChild(renderModule.renderer.domElement);
   animate();
 });
 </script>
