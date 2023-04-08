@@ -8,7 +8,7 @@ const camera = new THREE.PerspectiveCamera(
   100000
 );
 // 设置相机位置
-camera.position.set(1000, 1000, 1000);
+camera.position.set(100, 100, 100);
 // 更新摄像头
 camera.aspect = window.innerWidth / window.innerHeight;
 //   更新摄像机的投影矩阵
