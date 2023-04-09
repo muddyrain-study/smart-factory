@@ -5,6 +5,8 @@ import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import eventHub from "@/utils/eventHub";
 import * as THREE from "three";
 import camera from "../camera";
+import fragmentShader from "@/shader/figther/fragmentShader.glsl";
+import vertexShader from "@/shader/figther/vertexShader.glsl";
 export default class City {
   constructor(scene) {
     // 载入模型
@@ -232,14 +234,16 @@ export default class City {
     eventHub.on("pointsFighter", () => {
       this.createPoints();
     });
-    eventHub.on("pointsBlast", () => {});
+    eventHub.on("pointsBlast", () => {
+      this.pointsBlast();
+    });
     eventHub.on("recoverBack", () => {});
   }
 
   createPoints() {
-    if (!this.fighterPoints) {
-      this.fighterPoints = this.transformPoints(this.fighterGroup);
-      this.scene.add(this.fighterPoints);
+    if (!this.fighterPointsGroup) {
+      this.fighterPointsGroup = this.transformPoints(this.fighterGroup);
+      this.scene.add(this.fighterPointsGroup);
     }
   }
 
@@ -258,12 +262,26 @@ export default class City {
               Math.random(),
               Math.random()
             );
-            const material = new THREE.PointsMaterial({
-              size: 0.1,
-              color: color,
-              map: texture,
-              transparent: true,
+            // const material = new THREE.PointsMaterial({
+            //   size: 0.1,
+            //   color: color,
+            //   map: texture,
+            //   transparent: true,
+            //   blending: THREE.AdditiveBlending,
+            //   depthTest: false,
+            // });
+            const material = new THREE.ShaderMaterial({
+              uniforms: {
+                uColor: { value: color },
+                uTexture: { value: texture },
+                uTime: {
+                  value: 0,
+                },
+              },
+              vertexShader,
+              fragmentShader,
               blending: THREE.AdditiveBlending,
+              transparent: true,
               depthTest: false,
             });
             const points = new THREE.Points(child.geometry, material);
@@ -301,5 +319,28 @@ export default class City {
     //   }
     // });
     return group;
+  }
+  pointsBlast() {
+    this.fighterPointsGroup.traverse((child) => {
+      if (child.isPoints) {
+        let randomPositionArray = new Float32Array(
+          child.geometry.attributes.position.count * 3
+        );
+        for (let i = 0; i < child.geometry.attributes.position.count; i++) {
+          randomPositionArray[i * 3 + 0] = (Math.random() * 2 - 1) * 10;
+          randomPositionArray[i * 3 + 1] = (Math.random() * 2 - 1) * 10;
+          randomPositionArray[i * 3 + 2] = (Math.random() * 2 - 1) * 10;
+        }
+
+        child.geometry.setAttribute(
+          "aPostion",
+          new THREE.BufferAttribute(randomPositionArray, 3)
+        );
+        gsap.to(child.material.uniforms.uTime, {
+          value: 10,
+          duration: 5,
+        });
+      }
+    });
   }
 }
