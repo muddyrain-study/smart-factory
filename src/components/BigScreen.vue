@@ -27,6 +27,18 @@
         </div>
       </div>
       <div class="right">
+        <div class="cityEvent">
+          <h1 @click="flatFighter">
+            <img src="../assets/bg/bar.svg" class="icon" />
+            <span>展开飞机</span>
+          </h1>
+        </div>
+        <div class="cityEvent">
+          <h1 @click="recoverFighter">
+            <img src="../assets/bg/bar.svg" class="icon" />
+            <span>恢复飞机</span>
+          </h1>
+        </div>
         <div class="cityEvent list">
           <h3>
             <span>切换观览模式</span>
@@ -64,6 +76,12 @@ const showFloor2 = () => {
 };
 const showAll = () => {
   eventHub.emit("showAll");
+};
+const flatFighter = () => {
+  eventHub.emit("flatFighter");
+};
+const recoverFighter = () => {
+  eventHub.emit("recoverFighter");
 };
 </script>
 
