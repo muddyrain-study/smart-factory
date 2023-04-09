@@ -39,21 +39,23 @@
             <span>恢复飞机</span>
           </h1>
         </div>
-        <div class="cityEvent list">
-          <h3>
-            <span>切换观览模式</span>
-          </h3>
-          <ul>
-            <li>
-              <h1>
-                <div>
-                  <img class="icon" src="../assets/bg/dianli.svg" />
-                  <span>轨道观览模式</span>
-                </div>
-              </h1>
-              <p>可以使得相机围绕目标进行轨道运动。</p>
-            </li>
-          </ul>
+        <div class="cityEvent">
+          <h1 @click="pointsFighter">
+            <img src="../assets/bg/bar.svg" class="icon" />
+            <span>粒子特效</span>
+          </h1>
+        </div>
+        <div class="cityEvent">
+          <h1 @click="pointsBlast">
+            <img src="../assets/bg/bar.svg" class="icon" />
+            <span>粒子爆炸</span>
+          </h1>
+        </div>
+        <div class="cityEvent">
+          <h1 @click="recoverBack">
+            <img src="../assets/bg/bar.svg" class="icon" />
+            <span>粒子复原</span>
+          </h1>
         </div>
       </div>
     </div>
@@ -82,6 +84,15 @@ const flatFighter = () => {
 };
 const recoverFighter = () => {
   eventHub.emit("recoverFighter");
+};
+const pointsFighter = () => {
+  eventHub.emit("pointsFighter");
+};
+const pointsBlast = () => {
+  eventHub.emit("pointsBlast");
+};
+const recoverBack = () => {
+  eventHub.emit("recoverBack");
 };
 </script>
 

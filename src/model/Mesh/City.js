@@ -87,6 +87,8 @@ export default class City {
           }
         }
       });
+
+      this.showFighter();
     });
 
     this.initEvent();
@@ -126,7 +128,12 @@ export default class City {
       item.visible = false;
     });
   }
-
+  showFighter() {
+    this.floor1Group && (this.floor1Group.visible = false);
+    this.floor2Group && (this.floor2Group.visible = false);
+    this.wallGroup && (this.wallGroup.visible = false);
+    this.fighterGroup && (this.fighterGroup.visible = true);
+  }
   showWall() {
     this.wallGroup.visible = true;
   }
@@ -221,5 +228,78 @@ export default class City {
         }
       });
     });
+
+    eventHub.on("pointsFighter", () => {
+      this.createPoints();
+    });
+    eventHub.on("pointsBlast", () => {});
+    eventHub.on("recoverBack", () => {});
+  }
+
+  createPoints() {
+    if (!this.fighterPoints) {
+      this.fighterPoints = this.transformPoints(this.fighterGroup);
+      this.scene.add(this.fighterPoints);
+    }
+  }
+
+  transformPoints(object3D) {
+    // 创建纹理图形
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load("./assets/particles/1.png");
+    const group = new THREE.Group();
+    function createPoints(object3d, newObject3d) {
+      if (object3d.children.length > 0) {
+        object3d.children.forEach((child) => {
+          if (child.isMesh) {
+            // 随机生成颜色
+            const color = new THREE.Color(
+              Math.random(),
+              Math.random(),
+              Math.random()
+            );
+            const material = new THREE.PointsMaterial({
+              size: 0.1,
+              color: color,
+              map: texture,
+              transparent: true,
+              blending: THREE.AdditiveBlending,
+              depthTest: false,
+            });
+            const points = new THREE.Points(child.geometry, material);
+            points.position.copy(child.position);
+            points.rotation.copy(child.rotation);
+            points.scale.copy(child.scale);
+            newObject3d.add(points);
+            createPoints(child, points);
+          }
+        });
+      }
+    }
+    createPoints(object3D, group);
+    // object3D.traverse((child) => {
+    //   if (child.isMesh) {
+    //     const points = child.geometry.attributes.position.array;
+    //     const geometry = new THREE.BufferGeometry();
+    //     geometry.setAttribute("position", new THREE.BufferAttribute(points, 3));
+    //     // 随机生成颜色
+    //     const color = new THREE.Color(
+    //       Math.random(),
+    //       Math.random(),
+    //       Math.random()
+    //     );
+    //     const material = new THREE.PointsMaterial({
+    //       size: 0.1,
+    //       color: color,
+    //     });
+    //     const pointsMesh = new THREE.Points(geometry, material);
+    //     pointsMesh.position.copy(child.position);
+    //     pointsMesh.rotation.copy(child.rotation);
+    //     pointsMesh.scale.copy(child.scale);
+
+    //     group.add(pointsMesh);
+    //   }
+    // });
+    return group;
   }
 }
