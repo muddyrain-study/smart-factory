@@ -4,34 +4,24 @@
     <div class="main">
       <div class="left">
         <div class="cityEvent">
-          <h3>
-            <span>热气球控制</span>
-          </h3>
-          <h1 @click="toggleAction(0)">
+          <h1 @click="showWall">
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>设置热气球以横穿园区的动画显示</span>
+            <span>厂房外形展示</span>
           </h1>
-          <h1 @click="toggleAction(1)">
+          <h1 @click="showAll">
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>设置热气球以环绕园区进行运动</span>
+            <span>厂房分层展开</span>
           </h1>
           <div class="footerBoder"></div>
         </div>
         <div class="cityEvent">
-          <h3>
-            <span>相机控制</span>
-          </h3>
-          <h1 @click="toggleCamera('default')">
+          <h1 @click="showFloor1()">
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>默认相机视角</span>
+            <span>展示第一层楼</span>
           </h1>
-          <h1 @click="toggleCamera('carcamera_Orientation')">
+          <h1 @click="showFloor2()">
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>设置相机追随汽车导览园区</span>
-          </h1>
-          <h1 @click="toggleCamera('rightcamera_Orientation')">
-            <img src="../assets/bg/bar.svg" class="icon" />
-            <span>设置相机查看汽车司机视角</span>
+            <span>展示第二层楼</span>
           </h1>
           <div class="footerBoder"></div>
         </div>
@@ -42,7 +32,7 @@
             <span>切换观览模式</span>
           </h3>
           <ul>
-            <li @click="toggleControls('Orbit')">
+            <li>
               <h1>
                 <div>
                   <img class="icon" src="../assets/bg/dianli.svg" />
@@ -50,35 +40,6 @@
                 </div>
               </h1>
               <p>可以使得相机围绕目标进行轨道运动。</p>
-            </li>
-            <li @click="toggleControls('Fly')">
-              <h1>
-                <div>
-                  <img class="icon" src="../assets/bg/dianli.svg" />
-                  <span>飞行观览模式</span>
-                </div>
-              </h1>
-              <p>
-                启用了一种类似于数字内容创建工具（例如Blender）中飞行模式的导航方式
-              </p>
-            </li>
-            <li @click="toggleControls('FirstPerson')">
-              <h1>
-                <div>
-                  <img class="icon" src="../assets/bg/dianli.svg" />
-                  <span>第一人称观览模式</span>
-                </div>
-              </h1>
-              <p>第一人称控制器</p>
-            </li>
-            <li @click="togglePerson()">
-              <h1>
-                <div>
-                  <img class="icon" src="../assets/bg/dianli.svg" />
-                  <span>切换小人视角</span>
-                </div>
-              </h1>
-              <p>切换小人视角</p>
             </li>
           </ul>
         </div>
@@ -91,40 +52,18 @@
 import eventHub from "@/utils/eventHub";
 import { ref } from "vue";
 const props = defineProps(["dataInfo", "eventList"]);
-const imgs = {
-  电力: require("@/assets/bg/dianli.svg"),
-  火警: require("@/assets/bg/fire.svg"),
-  治安: require("@/assets/bg/jingcha.svg"),
-};
 
-const toFixInt = (num) => {
-  return num.toFixed(0);
+const showWall = () => {
+  eventHub.emit("showWall");
 };
-
-const currentActive = ref(null);
-eventHub.on("spriteClick", (data) => {
-  // console.log(data);
-  currentActive.value = data.i;
-});
-
-const toggleEvent = (i) => {
-  currentActive.value = i;
-  eventHub.emit("eventToggle", i);
+const showFloor1 = () => {
+  eventHub.emit("showFloor1");
 };
-
-const toggleAction = (i) => {
-  eventHub.emit("actionClick", i);
+const showFloor2 = () => {
+  eventHub.emit("showFloor2");
 };
-
-const toggleCamera = (name) => {
-  eventHub.emit("toggleCamera", name);
-};
-
-const toggleControls = (name) => {
-  eventHub.emit("toggleControls", name);
-};
-const togglePerson = () => {
-  eventHub.emit("togglePerson");
+const showAll = () => {
+  eventHub.emit("showAll");
 };
 </script>
 

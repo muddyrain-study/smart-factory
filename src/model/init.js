@@ -13,4 +13,6 @@ window.addEventListener("resize", () => {
   renderModule.renderer.setPixelRatio(window.devicePixelRatio);
   // 更新css渲染器
   renderModule.css3DRender.setSize(window.innerWidth, window.innerHeight);
+  // 设置css渲染器的像素比
+  renderModule.css3DRender.setPixelRatio(window.devicePixelRatio);
 });
