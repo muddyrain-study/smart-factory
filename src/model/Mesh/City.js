@@ -5,8 +5,8 @@ import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import eventHub from "@/utils/eventHub";
 import * as THREE from "three";
 import camera from "../camera";
-import fragmentShader from "@/shader/figther/fragmentShader.glsl";
-import vertexShader from "@/shader/figther/vertexShader.glsl";
+import fragmentShader from "@/shader/fighter/fragmentShader.glsl";
+import vertexShader from "@/shader/fighter/vertexShader.glsl";
 export default class City {
   constructor(scene) {
     // 载入模型
@@ -237,7 +237,9 @@ export default class City {
     eventHub.on("pointsBlast", () => {
       this.pointsBlast();
     });
-    eventHub.on("recoverBack", () => {});
+    eventHub.on("recoverBack", () => {
+      this.pointsBack();
+    });
   }
 
   createPoints() {
@@ -321,7 +323,7 @@ export default class City {
     return group;
   }
   pointsBlast() {
-    this.fighterPointsGroup.traverse((child) => {
+    this.fighterPointsGroup?.traverse((child) => {
       if (child.isPoints) {
         let randomPositionArray = new Float32Array(
           child.geometry.attributes.position.count * 3
@@ -333,12 +335,23 @@ export default class City {
         }
 
         child.geometry.setAttribute(
-          "aPostion",
+          "aPosition",
           new THREE.BufferAttribute(randomPositionArray, 3)
         );
+
         gsap.to(child.material.uniforms.uTime, {
           value: 10,
-          duration: 5,
+          duration: 2,
+        });
+      }
+    });
+  }
+  pointsBack() {
+    this.fighterPointsGroup?.traverse((child) => {
+      if (child.isPoints) {
+        gsap.to(child.material.uniforms.uTime, {
+          value: 0,
+          duration: 2,
         });
       }
     });
